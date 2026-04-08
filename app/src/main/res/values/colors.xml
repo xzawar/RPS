@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="green_primary">#43A047</color>
+    <color name="green_dark">#2E7D32</color>
+    <color name="green_bg">#4CAF50</color>
+    <color name="blue_primary">#1565C0</color>
+    <color name="blue_medium">#1976D2</color>
+    <color name="blue_rope">#29B6F6</color>
+    <color name="easy_color">#43A047</color>
+    <color name="normal_color">#F9A825</color>
+    <color name="hard_color">#8E24AA</color>
+    <color name="salmon">#EF7C60</color>
+    <color name="salmon_dark">#D96040</color>
+    <color name="red_rope">#EF5350</color>
+    <color name="dark_bg">#37474F</color>
+    <color name="dark_card">#2C3942</color>
+    <color name="dark_btn">#455A64</color>
+    <color name="dark_btn_pressed">#546E7A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="off_white">#F5F5F5</color>
+    <color name="text_dark">#1A1A2E</color>
+    <color name="text_gray">#607D8B</color>
+    <color name="score_blue">#1E88E5</color>
+    <color name="score_red">#E53935</color>
+    <color name="light_bg">#CFE8EE</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 </resources>
