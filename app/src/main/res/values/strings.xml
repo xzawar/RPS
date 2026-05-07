@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">RPS</string>
+    <string name="app_name">Rock Paper Scissors</string>
+    <string name="instructions">Press the button of your choice before the hand stops. First to 3 wins.</string>
+    <string name="how_to_play">▶  HOW TO PLAY</string>
+    <string name="back">Back</string>
+    <string name="play">PLAY</string>
+    <string name="exit">EXIT</string>
+    <string name="drag_hint">Drag to adjust difficulty</string>
+    <string name="easy">EASY</string>
+    <string name="normal">NORMAL</string>
+    <string name="hard">HARD</string>
+    <string name="play_again">PLAY AGAIN</string>
+    <string name="game_over">GAME OVER</string>
 </resources>
