@@ -93,7 +93,7 @@ public class DifficultyActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        tvDifficultyLabel.setText(LABELS[difficulty]);
+        tvDifficultyLabel.setText(difficulty == 0 ? getString(R.string.easy) : difficulty == 1 ? getString(R.string.normal) : getString(R.string.hard));
         tvBotFaceFront.setText(FACES[difficulty]);
         currentColor = COLORS[difficulty];
 
@@ -106,6 +106,7 @@ public class DifficultyActivity extends AppCompatActivity {
     private void updateUIAnimated() {
         int targetColor = COLORS[difficulty];
         String targetFace = FACES[difficulty];
+        String targetLabel = difficulty == 0 ? getString(R.string.easy) : difficulty == 1 ? getString(R.string.normal) : getString(R.string.hard);
 
         // 1. Smooth Color Cross-fade
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), currentColor, targetColor);
@@ -153,7 +154,7 @@ public class DifficultyActivity extends AppCompatActivity {
                 .translationY(-20f)
                 .setDuration(150)
                 .withEndAction(() -> {
-                    tvDifficultyLabel.setText(LABELS[difficulty]);
+                    tvDifficultyLabel.setText(targetLabel);
                     tvDifficultyLabel.setTranslationY(20f);
                     tvDifficultyLabel.animate()
                             .alpha(1f)

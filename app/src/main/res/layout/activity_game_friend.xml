@@ -2,83 +2,85 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_bg">
+    android:background="#4CAF50">
 
-    <!-- P2 buttons at top (rotated) -->
+    <!-- P2 buttons at top (rotated 180 so P2 reads from their side) -->
     <LinearLayout
         android:id="@+id/btnGroupP2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
         android:gravity="center"
-        android:paddingTop="20dp"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:rotation="180"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/btnP2Rock"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:text="✊"
-            android:textSize="40sp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/btn_circle_game"
             android:padding="0dp"
-            android:layout_marginHorizontal="12dp"/>
-
+            android:text="@string/emoji_rock"
+            android:textSize="36sp" />
         <Button
             android:id="@+id/btnP2Paper"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:text="✋"
-            android:textSize="40sp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/btn_circle_game"
             android:padding="0dp"
-            android:layout_marginHorizontal="12dp"/>
-
+            android:text="@string/emoji_paper"
+            android:textSize="36sp" />
         <Button
             android:id="@+id/btnP2Scissors"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:text="✌"
-            android:textSize="40sp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/btn_circle_game"
             android:padding="0dp"
-            android:layout_marginHorizontal="12dp"/>
+            android:text="@string/emoji_scissors"
+            android:textSize="36sp" />
     </LinearLayout>
 
-    <!-- Blue rope (P2 top) -->
+    <!-- Blue rope from P2 buttons down to P2 hand -->
     <View
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:background="@color/blue_rope"
-        app:layout_constraintTop_toBottomOf="@id/btnGroupP2"
-        app:layout_constraintBottom_toTopOf="@id/tvP2Hand"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- P2 hand -->
-    <TextView
-        android:id="@+id/tvP2Hand"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:text="✊"
-        android:textSize="70sp"
-        android:gravity="center"
-        android:background="@drawable/bg_white_card"
-        android:elevation="6dp"
-        android:rotation="180"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/ropeBlue"
+        android:layout_width="16dp"
+        android:layout_height="300dp"
+        android:background="@drawable/rope_blue"
+        app:layout_constraintBottom_toTopOf="@id/ivP2Hand"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.28"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnGroupP2" />
+
+    <!-- P2 hand (rotated 180 - hangs upside down) -->
 
     <!-- Score bubble (left) -->
+
+    <ImageView
+        android:id="@+id/ivP2Hand"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:contentDescription="@string/p2_hand_desc"
+        android:rotation="180"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_hand_rock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
+
     <FrameLayout
         android:id="@+id/scoreContainer"
         android:layout_width="64dp"
@@ -99,7 +101,7 @@
                 android:id="@+id/tvScoreP2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/zero"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/score_blue"/>
@@ -108,7 +110,7 @@
                 android:id="@+id/tvScoreP1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/zero"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/score_red"/>
@@ -120,7 +122,7 @@
         android:id="@+id/btnExit"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:text="EXIT"
+        android:text="@string/exit"
         android:textSize="10sp"
         android:textStyle="bold"
         android:textColor="@color/text_dark"
@@ -142,12 +144,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="28sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:visibility="invisible"
         android:fontFamily="sans-serif-black"
-        android:shadowColor="#00000066"
+        android:shadowColor="#55000000"
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4"
@@ -157,17 +159,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.5"/>
 
-    <!-- Status text -->
+    <!-- Status text (whose turn) -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="P2 Choose!"
-        android:textSize="20sp"
+        android:text="@string/p2_choose"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:fontFamily="sans-serif-black"
-        android:shadowColor="#00000055"
+        android:shadowColor="#55000000"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="3"
@@ -177,74 +179,79 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.5"/>
 
-    <!-- P1 hand -->
-    <TextView
-        android:id="@+id/tvP1Hand"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:text="✊"
-        android:textSize="70sp"
-        android:gravity="center"
-        android:background="@drawable/bg_white_card"
-        android:elevation="6dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.72"/>
+    <!-- P1 hand (right-side up, rising from bottom rope) -->
 
-    <!-- Red rope (P1 bottom) -->
-    <View
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:background="@color/red_rope"
-        app:layout_constraintTop_toBottomOf="@id/tvP1Hand"
-        app:layout_constraintBottom_toTopOf="@id/btnGroupP1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <!-- Red rope from P1 hand down to P1 buttons -->
 
     <!-- P1 buttons at bottom -->
+
+    <ImageView
+        android:id="@+id/ivP1Hand"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:contentDescription="@string/p1_hand_desc"
+        android:elevation="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_hand_rock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
+
+    <View
+        android:id="@+id/ropeRed"
+        android:layout_width="18dp"
+        android:layout_height="229dp"
+        android:background="@drawable/rope_red"
+        app:layout_constraintBottom_toTopOf="@id/btnGroupP1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivP1Hand"
+        app:layout_constraintVertical_bias="0.0" />
+
     <LinearLayout
         android:id="@+id/btnGroupP1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:paddingBottom="20dp"
+        android:orientation="horizontal"
         android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/btnP1Rock"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:text="✊"
-            android:textSize="40sp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/btn_circle_game"
             android:padding="0dp"
-            android:layout_marginHorizontal="12dp"/>
-
+            android:text="@string/emoji_rock"
+            android:textSize="36sp" />
         <Button
             android:id="@+id/btnP1Paper"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:text="✋"
-            android:textSize="40sp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/btn_circle_game"
             android:padding="0dp"
-            android:layout_marginHorizontal="12dp"/>
-
+            android:text="@string/emoji_paper"
+            android:textSize="36sp" />
         <Button
             android:id="@+id/btnP1Scissors"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:text="✌"
-            android:textSize="40sp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/btn_circle_game"
             android:padding="0dp"
-            android:layout_marginHorizontal="12dp"/>
+            android:text="@string/emoji_scissors"
+            android:textSize="36sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

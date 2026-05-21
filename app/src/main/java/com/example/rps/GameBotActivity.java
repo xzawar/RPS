@@ -2,7 +2,10 @@ package com.example.rps;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import androidx.appcompat.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,22 +19,25 @@ import java.util.Random;
 
 public class GameBotActivity extends AppCompatActivity {
 
-    // 0=Rock ✊, 1=Paper ✋, 2=Scissors ✌
-    private static final String[] HAND_EMOJI = {"✊", "✋", "✌"};
-    private static final String[] CHOICE_NAME = {"ROCK", "PAPER", "SCISSORS"};
+    private static final int[] HAND_DRAWABLE = {
+        R.drawable.ic_hand_rock,
+        R.drawable.ic_hand_paper,
+        R.drawable.ic_hand_scissors
+    };
+    private String[] CHOICE_NAME;
 
-    private TextView tvBotHand, tvPlayerHand, tvScorePlayer, tvScoreBot, tvResult, tvCountdown;
+    private ImageView ivBotHand, ivPlayerHand;
+    private TextView tvScorePlayer, tvScoreBot, tvResult, tvCountdown;
     private Button btnRock, btnPaper, btnScissors;
 
     private int playerScore = 0, botScore = 0;
-    private int difficulty; // 0=easy, 1=normal, 2=hard
+    private int difficulty;
     private int playerLastChoice = -1;
     private boolean playerHasChosen = false;
     private boolean roundActive = false;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Random random = new Random();
-
     private Runnable animRunnable;
     private Runnable stopRunnable;
     private int animFrame = 0;
@@ -42,9 +48,14 @@ public class GameBotActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_game_bot);
 
+        CHOICE_NAME = new String[]{
+                getString(R.string.rock),
+                getString(R.string.paper),
+                getString(R.string.scissors)
+        };
         difficulty    = getIntent().getIntExtra("difficulty", 0);
-        tvBotHand     = findViewById(R.id.tvBotHand);
-        tvPlayerHand  = findViewById(R.id.tvPlayerHand);
+        ivBotHand     = findViewById(R.id.ivBotHand);
+        ivPlayerHand  = findViewById(R.id.ivPlayerHand);
         tvScorePlayer = findViewById(R.id.tvScorePlayer);
         tvScoreBot    = findViewById(R.id.tvScoreBot);
         tvResult      = findViewById(R.id.tvResult);
@@ -56,66 +67,78 @@ public class GameBotActivity extends AppCompatActivity {
         btnRock.setOnClickListener(v -> playerChoose(0));
         btnPaper.setOnClickListener(v -> playerChoose(1));
         btnScissors.setOnClickListener(v -> playerChoose(2));
-
         findViewById(R.id.btnExit).setOnClickListener(v -> finish());
 
         startNewRound();
     }
-
     private void startNewRound() {
         playerHasChosen = false;
         roundActive = false;
         tvResult.setVisibility(View.INVISIBLE);
-        tvBotHand.setText("✊");
-        tvPlayerHand.setText("✊");
+        ivBotHand.setImageResource(HAND_DRAWABLE[0]);
+        ivPlayerHand.setImageResource(HAND_DRAWABLE[0]);
         setButtonsEnabled(false);
+        ivBotHand.clearAnimation();
+        ivPlayerHand.clearAnimation();
 
-        // Countdown 3 → 2 → 1 → GO!
+        // Countdown with pop animation each number
         tvCountdown.setVisibility(View.VISIBLE);
-        tvCountdown.setText("3");
-        handler.postDelayed(() -> tvCountdown.setText("2"), 700);
-        handler.postDelayed(() -> tvCountdown.setText("1"), 1400);
+        showCountdown("3");
+        handler.postDelayed(() -> showCountdown("2"), 700);
+        handler.postDelayed(() -> showCountdown("1"), 1400);
         handler.postDelayed(() -> {
-            tvCountdown.setText("GO!");
+            showCountdown("GO!");
             roundActive = true;
             setButtonsEnabled(true);
-            startHandAnimation();
+            // Start shake bounce on both hands
+            Animation shakeBot = AnimationUtils.loadAnimation(this, R.anim.hand_shake);
+            Animation shakePlayer = AnimationUtils.loadAnimation(this, R.anim.hand_shake_player);
+            ivBotHand.startAnimation(shakeBot);
+            ivPlayerHand.startAnimation(shakePlayer);
+            startHandEmojiCycle();
         }, 2100);
-        handler.postDelayed(() -> tvCountdown.setVisibility(View.INVISIBLE), 2600);
+        handler.postDelayed(() -> {
+            tvCountdown.setVisibility(View.INVISIBLE);
+            tvCountdown.clearAnimation();
+        }, 2700);
     }
 
-    private void startHandAnimation() {
+    private void showCountdown(String text) {
+        tvCountdown.setText(text);
+        tvCountdown.clearAnimation();
+        Animation pop = AnimationUtils.loadAnimation(this, R.anim.countdown_pop);
+        tvCountdown.startAnimation(pop);
+    }
+
+    private void startHandEmojiCycle() {
         animFrame = 0;
         animRunnable = new Runnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
                 animFrame = (animFrame + 1) % 3;
-                tvBotHand.setText(HAND_EMOJI[animFrame]);
-                // Bounce animation on the hand
-                tvBotHand.animate().scaleX(1.08f).scaleY(1.08f).setDuration(60)
-                    .withEndAction(() -> tvBotHand.animate().scaleX(1f).scaleY(1f).setDuration(60).start())
-                    .start();
-                handler.postDelayed(this, 180);
+                ivBotHand.setImageResource(HAND_DRAWABLE[animFrame]);
+                handler.postDelayed(this, 200);
             }
         };
         handler.post(animRunnable);
 
-        // Stop delay based on difficulty (Easy=long, Hard=short)
         long minDelay, range;
         switch (difficulty) {
-            case 0: minDelay = 3000; range = 2000; break; // 3–5s
-            case 1: minDelay = 1500; range = 1500; break; // 1.5–3s
-            default: minDelay = 700;  range = 800;  break; // 0.7–1.5s
+            case 0: minDelay = 3000; range = 2000; break;
+            case 1: minDelay = 1500; range = 1500; break;
+            default: minDelay = 700;  range = 800;  break;
         }
         long stopDelay = minDelay + (long)(random.nextFloat() * range);
 
         stopRunnable = () -> {
             if (!playerHasChosen && roundActive) {
-                // Time's up — player too slow
                 handler.removeCallbacks(animRunnable);
+                ivBotHand.clearAnimation();
+                ivPlayerHand.clearAnimation();
                 setButtonsEnabled(false);
                 int botChoice = getBotChoice(-1);
-                tvBotHand.setText(HAND_EMOJI[botChoice]);
+                ivBotHand.setImageResource(HAND_DRAWABLE[botChoice]);
+                Animation rev = AnimationUtils.loadAnimation(this, R.anim.hand_reveal);
+                ivBotHand.startAnimation(rev);
                 resolveRound(-1, botChoice);
             }
         };
@@ -126,21 +149,22 @@ public class GameBotActivity extends AppCompatActivity {
         if (!roundActive || playerHasChosen) return;
         playerHasChosen = true;
         roundActive = false;
-
         handler.removeCallbacks(animRunnable);
         handler.removeCallbacks(stopRunnable);
+        ivBotHand.clearAnimation();
+        ivPlayerHand.clearAnimation();
         setButtonsEnabled(false);
 
-        // Show player's hand (flipped upward to face screen)
-        tvPlayerHand.setText(HAND_EMOJI[choice]);
-        animatePop(tvPlayerHand);
+        ivPlayerHand.setImageResource(HAND_DRAWABLE[choice]);
+        Animation revP = AnimationUtils.loadAnimation(this, R.anim.hand_reveal);
+        ivPlayerHand.startAnimation(revP);
 
-        // Brief pause then reveal bot hand
         int botChoice = getBotChoice(choice);
         handler.postDelayed(() -> {
-            tvBotHand.setText(HAND_EMOJI[botChoice]);
-            animatePop(tvBotHand);
-            handler.postDelayed(() -> resolveRound(choice, botChoice), 500);
+            ivBotHand.setImageResource(HAND_DRAWABLE[botChoice]);
+            Animation revB = AnimationUtils.loadAnimation(this, R.anim.hand_reveal);
+            ivBotHand.startAnimation(revB);
+            handler.postDelayed(() -> resolveRound(choice, botChoice), 400);
         }, 400);
 
         playerLastChoice = choice;
@@ -148,23 +172,17 @@ public class GameBotActivity extends AppCompatActivity {
 
     private int getBotChoice(int playerChoice) {
         switch (difficulty) {
-            case 0:
-                // Easy: pure random
-                return random.nextInt(3);
+            case 0: return random.nextInt(3);
             case 1:
-                // Normal: 45% chance to counter last move, else random
-                if (playerLastChoice >= 0 && random.nextFloat() < 0.45f) {
+                if (playerLastChoice >= 0 && random.nextFloat() < 0.45f)
                     return (playerLastChoice + 1) % 3;
-                }
                 return random.nextInt(3);
             default:
-                // Hard: always counters current/last choice
                 int target = playerChoice >= 0 ? playerChoice : (playerLastChoice >= 0 ? playerLastChoice : random.nextInt(3));
                 return (target + 1) % 3;
         }
     }
 
-    // Returns 1=player wins, 2=bot wins, 0=draw
     private int determineWinner(int player, int bot) {
         if (player == bot) return 0;
         return (player - bot + 3) % 3 == 1 ? 1 : 2;
@@ -176,21 +194,25 @@ public class GameBotActivity extends AppCompatActivity {
 
         if (player == -1) {
             botScore++;
-            resultText = "TOO SLOW! ⏰";
+            resultText = getString(R.string.too_slow);
             resultColor = 0xFFF9A825;
         } else {
             int winner = determineWinner(player, bot);
             if (winner == 0) {
-                resultText = "DRAW! 🤝";
+                resultText = getString(R.string.draw);
                 resultColor = 0xFFF9A825;
             } else if (winner == 1) {
                 playerScore++;
-                resultText = CHOICE_NAME[player] + " BEATS " + CHOICE_NAME[bot] + "!\nYOU WIN! 🎉";
+                resultText = getString(R.string.you_win_round, CHOICE_NAME[player], CHOICE_NAME[bot]);
                 resultColor = 0xFF43A047;
+                Animation wb = AnimationUtils.loadAnimation(this, R.anim.win_bounce);
+                ivPlayerHand.startAnimation(wb);
             } else {
                 botScore++;
-                resultText = CHOICE_NAME[bot] + " BEATS " + CHOICE_NAME[player] + "!\nBOT WINS! 🤖";
+                resultText = getString(R.string.bot_wins_round, CHOICE_NAME[bot], CHOICE_NAME[player]);
                 resultColor = 0xFFE53935;
+                Animation wb = AnimationUtils.loadAnimation(this, R.anim.win_bounce);
+                ivBotHand.startAnimation(wb);
             }
         }
 
@@ -211,16 +233,16 @@ public class GameBotActivity extends AppCompatActivity {
     private void showGameOver() {
         boolean playerWon = playerScore >= 3;
         new AlertDialog.Builder(this)
-            .setTitle(playerWon ? "🏆 YOU WIN!" : "🤖 BOT WINS!")
-            .setMessage("Final Score\nYou: " + playerScore + "  —  Bot: " + botScore)
-            .setPositiveButton("PLAY AGAIN", (d, w) -> {
+            .setTitle(playerWon ? getString(R.string.you_win_title) : getString(R.string.bot_wins_title))
+            .setMessage(getString(R.string.final_score, getString(R.string.you), playerScore, getString(R.string.bot), botScore))
+            .setPositiveButton(R.string.play_again, (d, w) -> {
                 playerScore = 0; botScore = 0;
                 playerLastChoice = -1;
                 tvScorePlayer.setText("0");
                 tvScoreBot.setText("0");
                 startNewRound();
             })
-            .setNegativeButton("EXIT", (d, w) -> finish())
+            .setNegativeButton(R.string.exit, (d, w) -> finish())
             .setCancelable(false)
             .show();
     }
@@ -248,5 +270,7 @@ public class GameBotActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
+        if (ivBotHand != null) ivBotHand.clearAnimation();
+        if (ivPlayerHand != null) ivPlayerHand.clearAnimation();
     }
 }

@@ -6,6 +6,18 @@
     android:background="@color/dark_bg">
 
     <!-- Dark card (main content area) -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="200dp"
+        android:layout_height="54dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/btn_salmon"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +42,7 @@
                 android:id="@+id/tvDifficultyLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EASY"
+                android:text="@string/easy"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -69,13 +81,13 @@
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:max="100"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="22dp"
                     android:progress="0"
                     android:progressDrawable="@android:color/transparent"
-                    android:thumb="@drawable/slider_thumb"
-                    android:thumbOffset="0dp"
                     android:splitTrack="false"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="22dp"/>
+                    android:thumb="@drawable/slider_thumb"
+                    android:thumbOffset="0dp" />
             </FrameLayout>
 
             <!-- Hint text -->
@@ -96,7 +108,7 @@
                 android:id="@+id/btnPlay"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:text="PLAY"
+                android:text="@string/play"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -154,31 +166,5 @@
     </FrameLayout>
 
     <!-- Back button -->
-    <LinearLayout
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="12dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&#60;"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  Back"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
 
 </FrameLayout>

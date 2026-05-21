@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bounces DOWN then UP - for player/bottom hand rising from rope -->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:duration="280"
+        android:fromYDelta="0"
+        android:toYDelta="32dp"
+        android:repeatCount="infinite"
+        android:repeatMode="reverse"
+        android:interpolator="@android:interpolator/accelerate_decelerate" />
+</set>
