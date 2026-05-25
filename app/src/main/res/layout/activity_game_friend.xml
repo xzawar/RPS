@@ -57,7 +57,10 @@
         android:layout_width="16dp"
         android:layout_height="300dp"
         android:background="@drawable/rope_blue"
+<<<<<<< HEAD
         android:elevation="-10dp"
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         app:layout_constraintBottom_toTopOf="@id/ivP2Hand"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,17 +70,27 @@
 
     <!-- Score bubble (left) -->
 
+<<<<<<< HEAD
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivP2Hand"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:background="@color/off_white"
         android:backgroundTint="@color/white"
+=======
+    <ImageView
+        android:id="@+id/ivP2Hand"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         android:contentDescription="@string/p2_hand_desc"
         android:rotation="180"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_hand_rock"
+<<<<<<< HEAD
         app:shapeAppearanceOverlay="@style/RoundedImageView"
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -147,6 +160,14 @@
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+        android:text=""
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         android:fontFamily="sans-serif-black"
         android:shadowColor="#55000000"
         android:shadowDx="2"
@@ -183,6 +204,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.5"/>
 
+<<<<<<< HEAD
 
     <!-- Countdown overlay (3, 2, 1, GO!) -->
     <TextView
@@ -204,23 +226,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.45" />
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
     <!-- P1 hand (right-side up, rising from bottom rope) -->
 
     <!-- Red rope from P1 hand down to P1 buttons -->
 
     <!-- P1 buttons at bottom -->
 
+<<<<<<< HEAD
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivP1Hand"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:background="@color/off_white"
         android:backgroundTint="@color/white"
+=======
+    <ImageView
+        android:id="@+id/ivP1Hand"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         android:contentDescription="@string/p1_hand_desc"
         android:elevation="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_hand_rock"
+<<<<<<< HEAD
         app:shapeAppearanceOverlay="@style/RoundedImageView"
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"

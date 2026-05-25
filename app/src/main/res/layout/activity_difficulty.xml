@@ -6,7 +6,21 @@
     android:background="@color/dark_bg">
 
     <!-- Dark card (main content area) -->
+<<<<<<< HEAD
 
+=======
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="200dp"
+        android:layout_height="54dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/btn_salmon"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -32,6 +46,13 @@
                 android:id="@+id/tvDifficultyLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+                android:text="@string/easy"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
                 android:fontFamily="sans-serif-black"
                 android:letterSpacing="0.04"
                 android:text="@string/easy"
@@ -97,7 +118,15 @@
                 android:id="@+id/btnPlay"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+<<<<<<< HEAD
                 android:background="@drawable/btn_green"
+=======
+                android:text="@string/play"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_salmon"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
                 android:fontFamily="sans-serif-black"
                 android:letterSpacing="0.06"
                 android:text="@string/play"
@@ -148,6 +177,7 @@
     </FrameLayout>
 
     <!-- Back button -->
+<<<<<<< HEAD
     <Button
         android:id="@+id/btnBack"
         android:layout_width="200dp"
@@ -160,3 +190,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 </FrameLayout>
+=======
+
+</FrameLayout>
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3

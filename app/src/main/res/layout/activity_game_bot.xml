@@ -22,17 +22,27 @@
 
     <!-- Score bubble (left) -->
 
+<<<<<<< HEAD
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivBotHand"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:background="@color/off_white"
         android:backgroundTint="@color/white"
+=======
+    <ImageView
+        android:id="@+id/ivBotHand"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         android:contentDescription="@string/bot_hand_desc"
         android:rotation="180"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_hand_rock"
+<<<<<<< HEAD
         app:shapeAppearanceOverlay="@style/RoundedImageView"
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -138,6 +148,7 @@
         app:layout_constraintVertical_bias="0.56"/>
 
     <!-- Red rope from player hand to bottom -->
+<<<<<<< HEAD
     <View
         android:id="@+id/ropeRed"
         android:layout_width="16dp"
@@ -160,6 +171,18 @@
         app:shapeAppearanceOverlay="@style/RoundedImageView"
         app:layout_constraintBottom_toTopOf="@id/btnGroup"
         app:layout_constraintEnd_toEndOf="parent"
+=======
+
+    <ImageView
+        android:id="@+id/ivPlayerHand"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/player_hand_desc"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_hand_rock"
+        app:layout_constraintBottom_toTopOf="@id/btnGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -210,6 +233,17 @@
 
     </LinearLayout>
 
+<<<<<<< HEAD
 
+=======
+    <View
+        android:id="@+id/ropeRed"
+        android:layout_width="16dp"
+        android:layout_height="315dp"
+        android:background="@drawable/rope_red"
+        android:elevation="-10"
+        tools:layout_editor_absoluteX="199dp"
+        tools:layout_editor_absoluteY="449dp" />
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
 
 </androidx.constraintlayout.widget.ConstraintLayout>

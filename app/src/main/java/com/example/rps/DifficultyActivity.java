@@ -91,14 +91,23 @@ public class DifficultyActivity extends AppCompatActivity {
 
     private void updateUI() {
         tvDifficultyLabel.setText(difficulty == 0 ? getString(R.string.easy) : difficulty == 1 ? getString(R.string.normal) : getString(R.string.hard));
+<<<<<<< HEAD
         ivBotFaceFront.setImageResource(DRAWABLE_IDS[difficulty]);
+=======
+        tvBotFaceFront.setText(FACES[difficulty]);
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         currentColor = COLORS[difficulty];
 
         tvDifficultyLabel.setTextColor(currentColor);
     }
 
     private void updateUIAnimated() {
+<<<<<<< HEAD
         int targetDrawable = DRAWABLE_IDS[difficulty];
+=======
+        int targetColor = COLORS[difficulty];
+        String targetFace = FACES[difficulty];
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         String targetLabel = difficulty == 0 ? getString(R.string.easy) : difficulty == 1 ? getString(R.string.normal) : getString(R.string.hard);
 
         currentColor = COLORS[difficulty];
@@ -147,8 +156,12 @@ public class DifficultyActivity extends AppCompatActivity {
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .withEndAction(() -> {
                     tvDifficultyLabel.setText(targetLabel);
+<<<<<<< HEAD
                     tvDifficultyLabel.setTextColor(currentColor);
                     tvDifficultyLabel.setTranslationY(-12f);
+=======
+                    tvDifficultyLabel.setTranslationY(20f);
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
                     tvDifficultyLabel.animate()
                             .alpha(1f)
                             .translationY(0f)

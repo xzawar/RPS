@@ -19,18 +19,32 @@ import androidx.appcompat.app.AppCompatActivity;
 public class GameFriendActivity extends AppCompatActivity {
 
     private static final int[] HAND_DRAWABLE = {
+<<<<<<< HEAD
             R.drawable.ic_hand_rock,
             R.drawable.ic_hand_paper,
             R.drawable.ic_hand_scissors
+=======
+        R.drawable.ic_hand_rock,
+        R.drawable.ic_hand_paper,
+        R.drawable.ic_hand_scissors
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
     };
     private String[] CHOICE_NAME;
 
     private enum TurnState {
+<<<<<<< HEAD
         COUNTDOWN, P2_CHOOSING, P1_CHOOSING, REVEAL
     }
 
     private ImageView ivP1Hand, ivP2Hand;
     private TextView tvScoreP1, tvScoreP2, tvResult, tvStatus, tvCountdown;
+=======
+        P2_CHOOSING, P1_CHOOSING, REVEAL
+    }
+
+    private ImageView ivP1Hand, ivP2Hand;
+    private TextView tvScoreP1, tvScoreP2, tvResult, tvStatus;
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
     private Button btnP1Rock, btnP1Paper, btnP1Scissors, btnP2Rock, btnP2Paper, btnP2Scissors;
     private int p1Choice, p2Choice;
     private int p1Score = 0, p2Score = 0;
@@ -85,11 +99,15 @@ public class GameFriendActivity extends AppCompatActivity {
         p1Choice = -1;
         p2Choice = -1;
         tvResult.setVisibility(View.INVISIBLE);
+<<<<<<< HEAD
         tvStatus.setVisibility(View.INVISIBLE);
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         ivP1Hand.setImageResource(HAND_DRAWABLE[0]);
         ivP2Hand.setImageResource(HAND_DRAWABLE[0]);
         ivP1Hand.clearAnimation();
         ivP2Hand.clearAnimation();
+<<<<<<< HEAD
         setP1ButtonsEnabled(false);
         setP2ButtonsEnabled(false);
         turnState = TurnState.COUNTDOWN;
@@ -172,19 +190,47 @@ public class GameFriendActivity extends AppCompatActivity {
         tvCountdown.clearAnimation();
         Animation pop = AnimationUtils.loadAnimation(this, R.anim.countdown_pop);
         tvCountdown.startAnimation(pop);
+=======
+
+        turnState = TurnState.P2_CHOOSING;
+        setP1ButtonsEnabled(false);
+        setP2ButtonsEnabled(true);
+        tvStatus.setVisibility(View.VISIBLE);
+        tvStatus.setText(R.string.p2_choose);
+        tvStatus.setTextColor(0xFF1E88E5);
+
+        // Bounce P2 hand to signal their turn
+        Animation shakeTop = AnimationUtils.loadAnimation(this, R.anim.hand_shake);
+        ivP2Hand.startAnimation(shakeTop);
+
+        Animation pop = AnimationUtils.loadAnimation(this, R.anim.countdown_pop);
+        tvStatus.startAnimation(pop);
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
     }
 
     private void p2Choose(int choice) {
         if (turnState != TurnState.P2_CHOOSING) return;
         p2Choice = choice;
+<<<<<<< HEAD
         stopP2Cycle(); // freeze P2's hand, P1 keeps cycling
+=======
+        // Show rock (hidden until reveal)
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         ivP2Hand.clearAnimation();
         ivP2Hand.setImageResource(R.drawable.ic_hand_rock);
         Animation rev = AnimationUtils.loadAnimation(this, R.anim.hand_reveal);
         ivP2Hand.startAnimation(rev);
         setP2ButtonsEnabled(false);
 
+<<<<<<< HEAD
         // P2 hand is now locked in — no further animation until reveal
+=======
+        // Bounce P2 hand while waiting
+        handler.postDelayed(() -> {
+            Animation shake = AnimationUtils.loadAnimation(this, R.anim.hand_shake);
+            ivP2Hand.startAnimation(shake);
+        }, 350);
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
 
         turnState = TurnState.P1_CHOOSING;
         setP1ButtonsEnabled(true);
@@ -201,7 +247,10 @@ public class GameFriendActivity extends AppCompatActivity {
     private void p1Choose(int choice) {
         if (turnState != TurnState.P1_CHOOSING) return;
         p1Choice = choice;
+<<<<<<< HEAD
         stopHandEmojiCycle(); // stop both — P2's shake loop and P1's cycle
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         ivP1Hand.clearAnimation();
         ivP2Hand.clearAnimation();
         ivP1Hand.setImageResource(R.drawable.ic_hand_rock);
@@ -280,6 +329,7 @@ public class GameFriendActivity extends AppCompatActivity {
     private void showGameOver() {
         boolean p1Won = p1Score >= 3;
         new AlertDialog.Builder(this)
+<<<<<<< HEAD
                 .setTitle(p1Won ? getString(R.string.p1_wins_title) : getString(R.string.p2_wins_title))
                 .setMessage(getString(R.string.final_score, getString(R.string.p1), p1Score, getString(R.string.p2), p2Score))
                 .setPositiveButton(R.string.play_again, (d, w) -> {
@@ -291,6 +341,19 @@ public class GameFriendActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.exit, (d, w) -> finish())
                 .setCancelable(false)
                 .show();
+=======
+            .setTitle(p1Won ? getString(R.string.p1_wins_title) : getString(R.string.p2_wins_title))
+            .setMessage(getString(R.string.final_score, getString(R.string.p1), p1Score, getString(R.string.p2), p2Score))
+            .setPositiveButton(R.string.play_again, (d, w) -> {
+                p1Score = 0; p2Score = 0;
+                tvScoreP1.setText("0");
+                tvScoreP2.setText("0");
+                startNewRound();
+            })
+            .setNegativeButton(R.string.exit, (d, w) -> finish())
+            .setCancelable(false)
+            .show();
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
     }
 
     private void setP1ButtonsEnabled(boolean enabled) {
@@ -323,7 +386,10 @@ public class GameFriendActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
+<<<<<<< HEAD
         stopHandEmojiCycle();
+=======
+>>>>>>> ac07274fe90e5a6ba2b1457c467004f3ef5e6bd3
         if (ivP1Hand != null) ivP1Hand.clearAnimation();
         if (ivP2Hand != null) ivP2Hand.clearAnimation();
     }
