@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,17 +21,17 @@ public class DifficultyActivity extends AppCompatActivity {
     private int difficulty = 0;
 
     private static final String[] LABELS = {"EASY", "NORMAL", "HARD"};
-    // Updated to more expressive emojis
-    private static final String[] FACES   = {"😇",   "😎",    "💀"};
+    // PNG drawable resources
+    private static final int[] DRAWABLE_IDS = {R.drawable.smile, R.drawable.cool, R.drawable.skull};
     private static final int[]    COLORS  = {
-        0xFF4CAF50,  // Material Green 500
-        0xFFFFB300,  // Material Amber 600
-        0xFFE91E63   // Material Pink 500 (Better for Hard than Purple)
+            0xFF4CAF50,  // Material Green 500
+            0xFFFFB300,  // Material Amber 600
+            0xFFD32F2F,  // Material Pink 500 (Better for Hard than Purple)
     };
 
     private TextView tvDifficultyLabel;
-    private TextView tvBotFaceFront, tvBotFaceBack;
-    private View sliderFill, botFaceContainer, botFaceGlow;
+    private ImageView ivBotFaceFront, ivBotFaceBack;
+    private View botFaceContainer;
     private Button btnPlay;
     private int currentColor;
 
@@ -41,16 +42,14 @@ public class DifficultyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_difficulty);
 
         tvDifficultyLabel = findViewById(R.id.tvDifficultyLabel);
-        tvBotFaceFront    = findViewById(R.id.tvBotFaceFront);
-        tvBotFaceBack     = findViewById(R.id.tvBotFaceBack);
-        sliderFill        = findViewById(R.id.sliderFill);
+        ivBotFaceFront    = findViewById(R.id.tvBotFaceFront);
+        ivBotFaceBack     = findViewById(R.id.tvBotFaceBack);
         btnPlay           = findViewById(R.id.btnPlay);
         botFaceContainer  = findViewById(R.id.botFaceContainer);
-        botFaceGlow       = findViewById(R.id.botFaceGlow);
         SeekBar seekBar   = findViewById(R.id.seekDifficulty);
 
         currentColor = COLORS[0];
-        tvBotFaceFront.setText(FACES[0]);
+        ivBotFaceFront.setImageResource(DRAWABLE_IDS[0]);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -60,7 +59,6 @@ public class DifficultyActivity extends AppCompatActivity {
                     difficulty = newDiff;
                     updateUIAnimated();
                 }
-                updateFillWidth(seekBar, progress);
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {
@@ -78,7 +76,6 @@ public class DifficultyActivity extends AppCompatActivity {
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         updateUI();
-        updateFillWidth(seekBar, seekBar.getProgress());
     }
 
     private void animateSeekBar(SeekBar seekBar, int targetProgress) {
@@ -93,94 +90,73 @@ public class DifficultyActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        tvDifficultyLabel.setText(LABELS[difficulty]);
-        tvBotFaceFront.setText(FACES[difficulty]);
+        tvDifficultyLabel.setText(difficulty == 0 ? getString(R.string.easy) : difficulty == 1 ? getString(R.string.normal) : getString(R.string.hard));
+        ivBotFaceFront.setImageResource(DRAWABLE_IDS[difficulty]);
         currentColor = COLORS[difficulty];
 
         tvDifficultyLabel.setTextColor(currentColor);
-        btnPlay.setBackgroundTintList(ColorStateList.valueOf(currentColor));
-        sliderFill.setBackgroundTintList(ColorStateList.valueOf(currentColor));
-        botFaceGlow.setBackgroundTintList(ColorStateList.valueOf(currentColor));
     }
 
     private void updateUIAnimated() {
-        int targetColor = COLORS[difficulty];
-        String targetFace = FACES[difficulty];
+        int targetDrawable = DRAWABLE_IDS[difficulty];
+        String targetLabel = difficulty == 0 ? getString(R.string.easy) : difficulty == 1 ? getString(R.string.normal) : getString(R.string.hard);
 
-        // 1. Smooth Color Cross-fade
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), currentColor, targetColor);
-        colorAnimation.setDuration(400);
-        colorAnimation.addUpdateListener(animator -> {
-            int color = (int) animator.getAnimatedValue();
-            tvDifficultyLabel.setTextColor(color);
-            btnPlay.setBackgroundTintList(ColorStateList.valueOf(color));
-            sliderFill.setBackgroundTintList(ColorStateList.valueOf(color));
-            botFaceGlow.setBackgroundTintList(ColorStateList.valueOf(color));
-        });
-        colorAnimation.start();
-        currentColor = targetColor;
+        currentColor = COLORS[difficulty];
 
-        // 2. Smooth Emoji Cross-fade & Scale
-        tvBotFaceBack.setText(tvBotFaceFront.getText());
-        tvBotFaceBack.setAlpha(1f);
-        tvBotFaceBack.setScaleX(1f);
-        tvBotFaceBack.setScaleY(1f);
+        // Cancel any running animations first to avoid overlap
+        ivBotFaceBack.animate().cancel();
+        ivBotFaceFront.animate().cancel();
+        tvDifficultyLabel.animate().cancel();
 
-        tvBotFaceFront.setText(targetFace);
-        tvBotFaceFront.setAlpha(0f);
-        tvBotFaceFront.setScaleX(0.5f);
-        tvBotFaceFront.setScaleY(0.5f);
+        // 1. Image: crossfade with a gentle scale-up pop on the incoming image
+        ivBotFaceBack.setImageDrawable(ivBotFaceFront.getDrawable());
+        ivBotFaceBack.setAlpha(1f);
+        ivBotFaceBack.setScaleX(1f);
+        ivBotFaceBack.setScaleY(1f);
 
-        tvBotFaceBack.animate()
+        ivBotFaceFront.setImageResource(targetDrawable);
+        ivBotFaceFront.setAlpha(0f);
+        ivBotFaceFront.setScaleX(0.75f);
+        ivBotFaceFront.setScaleY(0.75f);
+
+        // Old image shrinks and fades out
+        ivBotFaceBack.animate()
                 .alpha(0f)
-                .scaleX(1.5f)
-                .scaleY(1.5f)
-                .setDuration(400)
+                .scaleX(1.1f)
+                .scaleY(1.1f)
+                .setDuration(250)
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
 
-        tvBotFaceFront.animate()
+        // New image grows and fades in — delayed slightly so the swap feels intentional
+        ivBotFaceFront.animate()
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(400)
-                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setStartDelay(100)
+                .setDuration(350)
+                .setInterpolator(new android.view.animation.OvershootInterpolator(0.8f))
+                .withEndAction(() -> ivBotFaceFront.setScaleX(1f))
                 .start();
 
-        // 3. Label Transition (Slide + Fade)
+        // 2. Label: fade out down, swap text, fade in from above
         tvDifficultyLabel.animate()
                 .alpha(0f)
-                .translationY(-20f)
-                .setDuration(150)
+                .translationY(12f)
+                .setDuration(160)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
                 .withEndAction(() -> {
-                    tvDifficultyLabel.setText(LABELS[difficulty]);
-                    tvDifficultyLabel.setTranslationY(20f);
+                    tvDifficultyLabel.setText(targetLabel);
+                    tvDifficultyLabel.setTextColor(currentColor);
+                    tvDifficultyLabel.setTranslationY(-12f);
                     tvDifficultyLabel.animate()
                             .alpha(1f)
                             .translationY(0f)
-                            .setDuration(150)
+                            .setDuration(220)
+                            .setStartDelay(0)
+                            .setInterpolator(new DecelerateInterpolator())
                             .start();
                 })
                 .start();
-
-        // 4. Glow Pulse
-        botFaceGlow.animate()
-                .scaleX(1.1f)
-                .scaleY(1.1f)
-                .alpha(1.0f)
-                .setDuration(200)
-                .withEndAction(() -> botFaceGlow.animate().scaleX(1.0f).scaleY(1.0f).alpha(0.8f).setDuration(200).start())
-                .start();
-    }
-
-    private void updateFillWidth(SeekBar seekBar, int progress) {
-        sliderFill.post(() -> {
-            int totalWidth = seekBar.getWidth() - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
-            int fillWidth = (int) (totalWidth * progress / 100f);
-            ViewGroup.LayoutParams params = sliderFill.getLayoutParams();
-            params.width = fillWidth;
-            sliderFill.setLayoutParams(params);
-            sliderFill.setTranslationX(seekBar.getPaddingLeft());
-        });
     }
 }
